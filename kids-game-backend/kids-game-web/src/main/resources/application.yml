@@ -36,13 +36,15 @@ spring:
       port: 6379
       password: Kidsgame2026!Redis
       database: 0
-      timeout: 3000ms
+      timeout: 30000ms
       lettuce:
         pool:
+          enabled: true
           max-active: 8
           max-wait: -1ms
           max-idle: 8
           min-idle: 0
+        shutdown-timeout: 100ms
 
 # MyBatis-Plus 配置
 mybatis-plus:
