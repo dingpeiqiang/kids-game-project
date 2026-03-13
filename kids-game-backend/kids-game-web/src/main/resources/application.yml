@@ -22,12 +22,12 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
       connection-test-query: SELECT 1
-  # 自动执行初始化脚本
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema.sql
-      data-locations: classpath:data.sql
+  # 自动执行初始化脚本（已禁用，避免重复插入数据）
+  # sql:
+  #   init:
+  #     mode: always
+  #     schema-locations: classpath:schema.sql
+  #     data-locations: classpath:data.sql
 
   # Redis 配置
   data:
@@ -45,6 +45,13 @@ spring:
           max-idle: 8
           min-idle: 0
         shutdown-timeout: 100ms
+
+# JWT 安全配置
+security:
+  jwt:
+    secret: ${JWT_SECRET:kids-game-platform-secret-key-for-jwt-token-generation-2024}
+    expiration: 604800000  # 7 天
+    refresh-expiration: 2592000000  # 30 天
 
 # MyBatis-Plus 配置
 mybatis-plus:
