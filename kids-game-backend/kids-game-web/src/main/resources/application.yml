@@ -111,3 +111,12 @@ kidgame:
   fatigue-points:
     # 初始点数
     initial: 10
+
+# 资源上传配置
+resource:
+  upload:
+    # 本地上传路径（生产环境请配置 OSS/COS）
+    path: ./uploads
+  cdn:
+    # CDN 域名（可选，如果配置则使用 CDN URL）
+    domain: 
