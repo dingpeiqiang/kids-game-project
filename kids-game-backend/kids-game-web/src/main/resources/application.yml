@@ -111,12 +111,27 @@ kidgame:
   fatigue-points:
     # 初始点数
     initial: 10
+# 腾讯云 COS 配置
+
 
 # 资源上传配置
 resource:
   upload:
-    # 本地上传路径（生产环境请配置 OSS/COS）
+    # 本地上传路径（备用，当 COS 未配置时使用）
     path: ./uploads
   cdn:
     # CDN 域名（可选，如果配置则使用 CDN URL）
     domain: 
+
+
+sftp:
+  enabled: true
+  host: 106.54.7.205
+  port: 22
+
+  base-directory: /upload
+  base-url: /files
+  # 连接超时（毫秒）- 默认30秒
+  connection-timeout: 30000
+  # 读取超时（毫秒）- 默认30秒
+  read-timeout: 30000
