@@ -1,0 +1,2 @@
+import{a as s,b as t,l as a,g as n}from"./vendor-_E2fy6K4.js";import{_ as o}from"./_plugin-vue_export-helper-DlAUqK2U.js";const r={class:"user-management"},_=s({__name:"UserManagement",setup(m){return(p,e)=>(n(),t("div",r,[...e[0]||(e[0]=[a("h2",null,"用户管理",-1),a("p",null,"用户管理功能开发中...",-1)])]))}}),d=o(_,[["__scopeId","data-v-b40b9e24"]]);export{d as default};
+//# sourceMappingURL=UserManagement-BzCc6nzv.js.map

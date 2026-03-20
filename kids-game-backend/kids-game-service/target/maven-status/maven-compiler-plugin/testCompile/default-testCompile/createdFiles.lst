@@ -1,0 +1,4 @@
+com\kidgame\service\GamePermissionServiceTest.class
+com\kidgame\service\UserRelationServiceTest.class
+com\kidgame\service\UserServiceTest.class
+com\kidgame\service\UserControlConfigServiceTest.class

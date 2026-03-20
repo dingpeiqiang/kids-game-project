@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打蛇解压游戏 - 素材生成器</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #333;
+    }
+    .canvas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .canvas-item {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .canvas-item h3 {
+      margin: 0 0 10px 0;
+      color: #666;
+      font-size: 14px;
+    }
+    canvas {
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .download-all {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #2196F3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 打蛇解压游戏 - 素材生成器</h1>
+    <p>自动生成炮台、蛇关节等游戏素材</p>
+    
+    <button onclick="downloadAll()" class="download-all">📥 下载所有素材</button>
+    
+    <div class="canvas-grid">
+      <!-- 炮台 -->
+      <div class="canvas-item">
+        <h3>炮台主体</h3>
+        <canvas id="turretBase" width="128" height="128"></canvas>
+        <button onclick="downloadCanvas('turretBase', 'turret_base.png')">下载</button>
+      </div>
+      
+      <div class="canvas-item">
+        <h3>炮管</h3>
+        <canvas id="turretBarrel" width="64" height="128"></canvas>
+        <button onclick="downloadCanvas('turretBarrel', 'turret_barrel.png')">下载</button>
+      </div>
+      
+      <!-- 蛇关节 -->
+      <div class="canvas-item">
+        <h3>蛇关节（正常）</h3>
+        <canvas id="snakeJointNormal" width="64" height="64"></canvas>
+        <button onclick="downloadCanvas('snakeJointNormal', 'snake_joint_normal.png')">下载</button>
+      </div>
+      
+      <div class="canvas-item">
+        <h3>蛇关节（受伤）</h3>
+        <canvas id="snakeJointHurt" width="64" height="64"></canvas>
+        <button onclick="downloadCanvas('snakeJointHurt', 'snake_joint_hurt.png')">下载</button>
+      </div>
+      
+      <div class="canvas-item">
+        <h3>蛇关节（危险）</h3>
+        <canvas id="snakeJointDanger" width="64" height="64"></canvas>
+        <button onclick="downloadCanvas('snakeJointDanger', 'snake_joint_danger.png')">下载</button>
+      </div>
+      
+      <!-- 子弹 -->
+      <div class="canvas-item">
+        <h3>子弹</h3>
+        <canvas id="bullet" width="32" height="32"></canvas>
+        <button onclick="downloadCanvas('bullet', 'bullet.png')">下载</button>
+      </div>
+      
+      <!-- 粒子 -->
+      <div class="canvas-item">
+        <h3>粒子（火花）</h3>
+        <canvas id="particleSpark" width="16" height="16"></canvas>
+        <button onclick="downloadCanvas('particleSpark', 'particle_spark.png')">下载</button>
+      </div>
+      
+      <div class="canvas-item">
+        <h3>粒子（爆炸）</h3>
+        <canvas id="particleExplosion" width="16" height="16"></canvas>
+        <button onclick="downloadCanvas('particleExplosion', 'particle_explosion.png')">下载</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 绘制炮台底座
+    function drawTurretBase() {
+      const ctx = document.getElementById('turretBase').getContext('2d');
+      const w = 128, h = 128;
+      
+      // 渐变背景
+      const gradient = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w/2);
+      gradient.addColorStop(0, '#4a5568');
+      gradient.addColorStop(1, '#2d3748');
+      
+      // 底座圆形
+      ctx.beginPath();
+      ctx.arc(w/2, h/2, 60, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#718096';
+      ctx.stroke();
+      
+      // 装饰环
+      ctx.beginPath();
+      ctx.arc(w/2, h/2, 45, 0, Math.PI * 2);
+      ctx.strokeStyle = '#4a5568';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      
+      // 金属高光
+      ctx.beginPath();
+      ctx.arc(w/2 - 15, h/2 - 15, 20, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.1)';
+      ctx.fill();
+    }
+    
+    // 绘制炮管
+    function drawTurretBarrel() {
+      const ctx = document.getElementById('turretBarrel').getContext('2d');
+      const w = 64, h = 128;
+      
+      // 炮管主体
+      const gradient = ctx.createLinearGradient(0, 0, w, 0);
+      gradient.addColorStop(0, '#1a4d3e');
+      gradient.addColorStop(0.2, '#276749');
+      gradient.addColorStop(0.5, '#2f855a');
+      gradient.addColorStop(0.8, '#276749');
+      gradient.addColorStop(1, '#1a4d3e');
+      
+      ctx.fillRect(12, 20, 40, 100);
+      
+      // 边框
+      ctx.strokeStyle = '#1a4d3e';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(12, 20, 40, 100);
+      
+      // 炮口
+      ctx.fillStyle = '#68d391';
+      ctx.fillRect(14, 15, 36, 10);
+      
+      // 炮口高光
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fillRect(16, 17, 32, 6);
+    }
+    
+    // 绘制蛇关节
+    function drawSnakeJoint(state = 'normal') {
+      const ctx = document.getElementById(`snakeJoint${state.charAt(0).toUpperCase() + state.slice(1)}`).getContext('2d');
+      const w = 64, h = 64;
+      
+      let baseColor, borderColor;
+      if (state === 'normal') {
+        baseColor = '#ff6b35';
+        borderColor = '#c44d00';
+      } else if (state === 'hurt') {
+        baseColor = '#ff8855';
+        borderColor = '#cc5500';
+      } else { // danger
+        baseColor = '#ff4444';
+        borderColor = '#cc0000';
+      }
+      
+      // 渐变背景
+      const gradient = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, 30);
+      gradient.addColorStop(0, baseColor);
+      gradient.addColorStop(1, borderColor);
+      
+      // 主体圆形
+      ctx.beginPath();
+      ctx.arc(w/2, h/2, 28, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = borderColor;
+      ctx.stroke();
+      
+      // 内圈装饰
+      ctx.beginPath();
+      ctx.arc(w/2, h/2, 18, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.2)';
+      ctx.fill();
+      
+      // 眼睛
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(w/2 - 10, h/2 - 5, 7, 0, Math.PI * 2);
+      ctx.arc(w/2 + 10, h/2 - 5, 7, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // 眼珠
+      ctx.fillStyle = '#000000';
+      ctx.beginPath();
+      ctx.arc(w/2 - 10, h/2 - 5, 3, 0, Math.PI * 2);
+      ctx.arc(w/2 + 10, h/2 - 5, 3, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // 眼神光
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(w/2 - 11, h/2 - 6, 1.5, 0, Math.PI * 2);
+      ctx.arc(w/2 + 9, h/2 - 6, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    // 绘制子弹
+    function drawBullet() {
+      const ctx = document.getElementById('bullet').getContext('2d');
+      const w = 32, h = 32;
+      
+      // 发光效果
+      const gradient = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, 16);
+      gradient.addColorStop(0, '#ffff00');
+      gradient.addColorStop(0.5, '#ffaa00');
+      gradient.addColorStop(1, 'rgba(255,170,0,0)');
+      
+      ctx.beginPath();
+      ctx.arc(w/2, h/2, 16, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      // 核心
+      ctx.beginPath();
+      ctx.arc(w/2, h/2, 8, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffff00';
+      ctx.fill();
+      ctx.strokeStyle = '#ffaa00';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+    
+    // 绘制粒子
+    function drawParticle(type) {
+      const ctx = document.getElementById(type === 'spark' ? 'particleSpark' : 'particleExplosion').getContext('2d');
+      const w = 16, h = 16;
+      
+      if (type === 'spark') {
+        // 火花粒子（金色）
+        const gradient = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, 8);
+        gradient.addColorStop(0, '#ffd700');
+        gradient.addColorStop(0.5, '#ffa500');
+        gradient.addColorStop(1, 'rgba(255,165,0,0)');
+        
+        ctx.beginPath();
+        ctx.arc(w/2, h/2, 8, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      } else {
+        // 爆炸粒子（红色）
+        const gradient = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, 8);
+        gradient.addColorStop(0, '#ff4444');
+        gradient.addColorStop(0.5, '#ff8888');
+        gradient.addColorStop(1, 'rgba(255,136,136,0)');
+        
+        ctx.beginPath();
+        ctx.arc(w/2, h/2, 8, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+    }
+    
+    // 下载单个 canvas
+    function downloadCanvas(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+    
+    // 下载所有
+    function downloadAll() {
+      downloadCanvas('turretBase', 'turret_base.png');
+      setTimeout(() => downloadCanvas('turretBarrel', 'turret_barrel.png'), 100);
+      setTimeout(() => downloadCanvas('snakeJointNormal', 'snake_joint_normal.png'), 200);
+      setTimeout(() => downloadCanvas('snakeJointHurt', 'snake_joint_hurt.png'), 300);
+      setTimeout(() => downloadCanvas('snakeJointDanger', 'snake_joint_danger.png'), 400);
+      setTimeout(() => downloadCanvas('bullet', 'bullet.png'), 500);
+      setTimeout(() => downloadCanvas('particleSpark', 'particle_spark.png'), 600);
+      setTimeout(() => downloadCanvas('particleExplosion', 'particle_explosion.png'), 700);
+    }
+    
+    // 初始化绘制
+    window.onload = function() {
+      drawTurretBase();
+      drawTurretBarrel();
+      drawSnakeJoint('normal');
+      drawSnakeJoint('hurt');
+      drawSnakeJoint('danger');
+      drawBullet();
+      drawParticle('spark');
+      drawParticle('explosion');
+    };
+  </script>
+</body>
+</html>
