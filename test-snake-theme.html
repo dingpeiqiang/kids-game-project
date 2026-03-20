@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贪吃蛇主题测试工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 28px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section h2::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+        button.success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        .output {
+            background: #212529;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        .output .error {
+            color: #ff6b6b;
+        }
+        .output .success {
+            color: #51cf66;
+        }
+        .output .info {
+            color: #74c0fc;
+        }
+        .output .warning {
+            color: #ffd43b;
+        }
+        .theme-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .theme-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .theme-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .theme-card.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        .theme-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .theme-card p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status.online {
+            background: #d3f9d8;
+            color: #2b8a3e;
+        }
+        .status.offline {
+            background: #ffe3e3;
+            color: #c92a2a;
+        }
+        .resource-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .resource-item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+        .resource-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+        .resource-item p {
+            font-size: 11px;
+            color: #666;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐍 贪吃蛇主题测试工具</h1>
+
+        <!-- 状态检查 -->
+        <div class="section">
+            <h2>服务状态</h2>
+            <button onclick="checkServices()" class="secondary">检查服务</button>
+            <div id="serviceStatus" class="output" style="display:none;"></div>
+        </div>
+
+        <!-- Token 设置 -->
+        <div class="section">
+            <h2>认证设置</h2>
+            <div class="form-group">
+                <label>Authorization Token:</label>
+                <input type="text" id="tokenInput" placeholder="从 localStorage.getItem('token') 获取">
+            </div>
+            <button onclick="saveToken()">保存 Token</button>
+            <button onclick="loadTokenFromStorage()" class="secondary">从 localStorage 加载</button>
+            <div id="tokenStatus" class="output" style="display:none;"></div>
+        </div>
+
+        <!-- 主题列表 -->
+        <div class="section">
+            <h2>主题列表</h2>
+            <div class="form-group">
+                <label>游戏 ID（可选）:</label>
+                <input type="number" id="gameIdInput" placeholder="贪吃蛇游戏的 ID">
+            </div>
+            <button onclick="loadThemes()" class="success">加载主题列表</button>
+            <div id="themeList" class="theme-preview" style="display:none;"></div>
+        </div>
+
+        <!-- 主题详情 -->
+        <div class="section">
+            <h2>主题详情测试</h2>
+            <div class="form-group">
+                <label>主题 ID:</label>
+                <input type="text" id="themeIdInput" placeholder="输入主题 ID">
+            </div>
+            <button onclick="loadThemeConfig()" class="success">加载主题配置</button>
+            <button onclick="testResourceLoading()" class="secondary">测试资源加载</button>
+            <div id="themeOutput" class="output" style="display:none;"></div>
+            <div id="resourcePreview" class="resource-preview" style="display:none;"></div>
+        </div>
+
+        <!-- 测试结果 -->
+        <div class="section">
+            <h2>测试结果</h2>
+            <button onclick="clearOutput()">清空</button>
+            <div id="testOutput" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080';
+        let currentToken = '';
+
+        // 日志输出
+        function log(message, type = 'info') {
+            const output = document.getElementById('testOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const line = document.createElement('div');
+            line.className = type;
+            line.textContent = `[${timestamp}] ${message}`;
+            output.appendChild(line);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearOutput() {
+            document.getElementById('testOutput').innerHTML = '';
+            log('日志已清空', 'info');
+        }
+
+        // 检查服务状态
+        async function checkServices() {
+            const statusDiv = document.getElementById('serviceStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '<div class="loading">检查中</div>';
+
+            log('开始检查服务状态...', 'info');
+
+            try {
+                // 检查后端
+                const backendRes = await fetch(`${API_BASE}/actuator/health`);
+                const backendOk = backendRes.ok;
+                log(`后端服务: ${backendOk ? '✅ 正常' : '❌ 异常'}`, backendOk ? 'success' : 'error');
+
+                // 检查前端（通过访问根路径）
+                try {
+                    const frontendRes = await fetch('http://localhost:5173');
+                    const frontendOk = frontendRes.ok;
+                    log(`前端服务: ${frontendOk ? '✅ 正常' : '❌ 异常'}`, frontendOk ? 'success' : 'error');
+                } catch (e) {
+                    log('前端服务: ❌ 未运行或无法访问', 'error');
+                }
+
+                statusDiv.innerHTML = `
+                    <div style="color: ${backendOk ? '#51cf66' : '#ff6b6b'}">
+                        ${backendOk ? '✅ 后端服务正常' : '❌ 后端服务异常'}
+                    </div>
+                `;
+            } catch (error) {
+                log(`服务检查失败: ${error.message}`, 'error');
+                statusDiv.innerHTML = '<div style="color: #ff6b6b">❌ 无法连接到后端服务</div>';
+            }
+        }
+
+        // Token 管理
+        function saveToken() {
+            const token = document.getElementById('tokenInput').value.trim();
+            if (!token) {
+                log('Token 不能为空', 'error');
+                return;
+            }
+            currentToken = token;
+            localStorage.setItem('testToken', token);
+            log('Token 已保存', 'success');
+        }
+
+        function loadTokenFromStorage() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                document.getElementById('tokenInput').value = token;
+                currentToken = token;
+                log('已从 localStorage 加载 Token', 'success');
+            } else {
+                log('localStorage 中没有 Token', 'warning');
+            }
+        }
+
+        // 加载主题列表
+        async function loadThemes() {
+            if (!currentToken) {
+                log('请先设置 Token', 'error');
+                return;
+            }
+
+            const gameId = document.getElementById('gameIdInput').value;
+            log('开始加载主题列表...', 'info');
+
+            try {
+                let url = `${API_BASE}/api/theme/list?status=on_sale&page=1&pageSize=20`;
+                if (gameId) {
+                    url += `&ownerType=GAME&ownerId=${gameId}`;
+                }
+
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${currentToken}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    log('Token 已过期，请重新登录', 'error');
+                    return;
+                }
+
+                const result = await response.json();
+                log(`API 响应: ${JSON.stringify(result).substring(0, 200)}...`, 'info');
+
+                if (result.code === 200 && result.data) {
+                    const themes = result.data.list || result.data || [];
+                    log(`找到 ${themes.length} 个主题`, 'success');
+
+                    const themeListDiv = document.getElementById('themeList');
+                    themeListDiv.style.display = 'grid';
+                    themeListDiv.innerHTML = themes.map(theme => `
+                        <div class="theme-card" onclick="selectTheme('${theme.themeId || theme.id}', '${theme.themeName || theme.name}')">
+                            <h3>${theme.themeName || theme.name}</h3>
+                            <p>ID: ${theme.themeId || theme.id}</p>
+                            <p>${theme.description || '无描述'}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    log(`加载失败: ${result.msg || result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`请求失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 选择主题
+        function selectTheme(id, name) {
+            document.getElementById('themeIdInput').value = id;
+            log(`已选择主题: ${name} (ID: ${id})`, 'success');
+
+            // 高亮选中
+            document.querySelectorAll('.theme-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.theme-card').classList.add('selected');
+        }
+
+        // 加载主题配置
+        async function loadThemeConfig() {
+            const themeId = document.getElementById('themeIdInput').value.trim();
+            if (!themeId) {
+                log('请输入主题 ID', 'error');
+                return;
+            }
+            if (!currentToken) {
+                log('请先设置 Token', 'error');
+                return;
+            }
+
+            log(`开始加载主题配置，ID: ${themeId}`, 'info');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/theme/download?id=${themeId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${currentToken}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    log('Token 已过期，请重新登录', 'error');
+                    return;
+                }
+
+                const result = await response.json();
+
+                const outputDiv = document.getElementById('themeOutput');
+                outputDiv.style.display = 'block';
+
+                if (result.code === 200 && result.data) {
+                    log('主题配置加载成功', 'success');
+                    
+                    // 解析配置
+                    let config = result.data;
+                    if (typeof config === 'string') {
+                        config = JSON.parse(config);
+                    } else if (config.configJson) {
+                        config = typeof config.configJson === 'string' 
+                            ? JSON.parse(config.configJson) 
+                            : config.configJson;
+                    } else if (config.config) {
+                        config = config.config;
+                    }
+
+                    outputDiv.textContent = JSON.stringify(config, null, 2);
+                    log(`主题名称: ${config.default?.name || config.themeName || '未知'}`, 'info');
+                    log(`主题配置已显示在下方`, 'info');
+                } else {
+                    log(`加载失败: ${result.msg || result.message}`, 'error');
+                    outputDiv.textContent = JSON.stringify(result, null, 2);
+                }
+            } catch (error) {
+                log(`请求失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 测试资源加载
+        async function testResourceLoading() {
+            const themeId = document.getElementById('themeIdInput').value.trim();
+            if (!themeId) {
+                log('请先加载主题配置', 'error');
+                return;
+            }
+
+            log('开始测试资源加载...', 'info');
+
+            try {
+                // 先加载配置
+                const response = await fetch(`${API_BASE}/api/theme/download?id=${themeId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${currentToken}`
+                    }
+                });
+                const result = await response.json();
+
+                let config = result.data;
+                if (typeof config === 'string') config = JSON.parse(config);
+                else if (config.configJson) config = typeof config.configJson === 'string' ? JSON.parse(config.configJson) : config.configJson;
+                else if (config.config) config = config.config;
+
+                const assets = config.default?.assets || config.assets || {};
+                const resourceTypes = ['snakeHead', 'snakeBody', 'snakeTail', 'food', 'gameBg'];
+
+                const previewDiv = document.getElementById('resourcePreview');
+                previewDiv.style.display = 'grid';
+                previewDiv.innerHTML = '';
+
+                for (const type of resourceTypes) {
+                    const asset = assets[type];
+                    if (asset && asset.url) {
+                        log(`测试资源: ${type} -> ${asset.url}`, 'info');
+
+                        // 尝试加载图片
+                        const img = new Image();
+                        img.onload = () => {
+                            log(`✅ ${type} 加载成功`, 'success');
+                            previewDiv.innerHTML += `
+                                <div class="resource-item">
+                                    <img src="${asset.url}" alt="${type}">
+                                    <p>${type}</p>
+                                </div>
+                            `;
+                        };
+                        img.onerror = () => {
+                            log(`❌ ${type} 加载失败`, 'error');
+                            previewDiv.innerHTML += `
+                                <div class="resource-item">
+                                    <p>❌ ${type}</p>
+                                    <p style="color: #ff6b6b">加载失败</p>
+                                </div>
+                            `;
+                        };
+                        img.src = asset.url;
+                    }
+                }
+            } catch (error) {
+                log(`资源测试失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 初始化
+        window.onload = () => {
+            const savedToken = localStorage.getItem('testToken');
+            if (savedToken) {
+                document.getElementById('tokenInput').value = savedToken;
+                currentToken = savedToken;
+            }
+            log('主题测试工具已就绪', 'info');
+        };
+    </script>
+</body>
+</html>
