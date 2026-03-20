@@ -112,7 +112,16 @@ kidgame:
     # 初始点数
     initial: 10
 # 腾讯云 COS 配置
-
+tencent:
+  cos:
+    # 密钥配置（请替换为你自己的密钥）
+    secret-id: REMOVED_SECRET_ID
+    secret-key: REMOVED_SECRET_KEY
+    # 存储桶配置
+    bucket: dingpq-1304428008
+    region: ap-nanjing
+    # 自定义 CDN 域名（可选，如果没有配置则使用 COS 默认域名）
+    base-url: https://dingpq-1304428008.cos.ap-nanjing.myqcloud.com
 
 # 资源上传配置
 resource:
@@ -121,14 +130,15 @@ resource:
     path: ./uploads
   cdn:
     # CDN 域名（可选，如果配置则使用 CDN URL）
-    domain: 
+    domain:
 
 
 sftp:
   enabled: true
   host: 106.54.7.205
   port: 22
-
+  username: dingsftp
+  password: dingsftp
   base-directory: /upload
   base-url: /files
   # 连接超时（毫秒）- 默认30秒
