@@ -19,7 +19,7 @@ buildNumber.properties
 .classpath
 .settings/
 .factorypath
-*.yml
+
 # Eclipse
 .apt_generated
 .classpath
