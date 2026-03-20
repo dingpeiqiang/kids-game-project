@@ -1,0 +1,2 @@
+function n(s){if(console.error("API Error:",s),s.response){const t=s.response.status,e=s.response.data;return e&&e.message?{message:e.message,code:e.code,status:t}:e?{message:JSON.stringify(e),status:t}:{message:{400:"请求参数错误",401:"未授权,请重新登录",403:"没有权限访问",404:"请求的资源不存在",500:"服务器错误,请稍后重试",502:"网关错误",503:"服务暂时不可用"}[t]||`请求失败 (${t}): ${s.response.statusText}`,status:t}}return s.request?{message:"网络连接失败,请检查网络后重试"}:{message:s.message||"操作失败,请稍后重试"}}export{n as h};
+//# sourceMappingURL=error-handler.util-BYQhE0r2.js.map

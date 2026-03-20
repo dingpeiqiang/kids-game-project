@@ -1,0 +1,2 @@
+import{a as n,b as a,l as t,g as o}from"./vendor-_E2fy6K4.js";import{_ as s}from"./_plugin-vue_export-helper-DlAUqK2U.js";const r={class:"question-management"},_=n({__name:"QuestionManagement",setup(m){return(c,e)=>(o(),a("div",r,[...e[0]||(e[0]=[t("h2",null,"题库管理",-1),t("p",null,"题库管理功能开发中...",-1)])]))}}),i=s(_,[["__scopeId","data-v-b8428c6e"]]);export{i as default};
+//# sourceMappingURL=QuestionManagement-bKXMM6re.js.map
