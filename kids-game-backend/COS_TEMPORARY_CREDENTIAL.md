@@ -94,8 +94,8 @@ curl "http://localhost:8080/api/cos/credential?filename=test.jpg&category=themes
   "data": {
     "credentials": {
       "tmpSecretId": "YOUR_TEMP_SECRET_ID",
-      "tmpSecretKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-      "sessionToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      "tmpSecretKey": "YOUR_TEMP_SECRET_KEY",
+      "sessionToken": "YOUR_SESSION_TOKEN"
     },
     "startTime": 1710739200,
     "expiredTime": 1710741000,

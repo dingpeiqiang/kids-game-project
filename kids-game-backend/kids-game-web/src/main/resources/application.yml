@@ -114,9 +114,9 @@ kidgame:
 # 腾讯云 COS 配置
 tencent:
   cos:
-    # 密钥配置（请替换为你自己的密钥）
-    secret-id: REMOVED_SECRET_ID
-    secret-key: REMOVED_SECRET_KEY
+    # 密钥配置（请使用环境变量替换）
+    secret-id: ${TENCENT_COS_SECRET_ID:}
+    secret-key: ${TENCENT_COS_SECRET_KEY:}
     # 存储桶配置
     bucket: dingpq-1304428008
     region: ap-nanjing
